@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.dao.LogsDao">
+    <!-- 查询  ++ 模糊查询-->
+    <select id="getAllByConfigCode" parameterType="com.bdqn.entity.Logs" resultType="com.bdqn.entity.Logs">
+        select *
+        from logs
+        <where>
+            <if test="id != null">
+                id =#{id}
+            </if>
+            <if test="userId != null ">
+                and userId = #{userId}
+            </if>
+            <if test="userName != null and userName != ''">
+                and userName like concat('%',#{userName},'%')
+            </if>
+            <if test="businessNum != null and businessNum != ''">
+                and businessNum like concat('%',#{businessNum},'%')
+            </if>
+            <if test="businessType != null and businessType!=''">
+                and businessType like concat('%',#{businessType},'%')
+            </if>
+            <if test="businessStatus != null and businessStatus!= ''">
+                and businessStatus like concat('%',#{businessStatus},'%')
+            </if>
+            <if test="operateMess != null and operateMess !=''">
+                and operateMess like concat('%',#{operateMess},'%')
+            </if>
+            <if test="operateDate != null">
+                and operateDate =#{operateDate}
+            </if>
+        </where>
+    </select>
+    <!--  改 -->
+    <update id="getUpOne" parameterType="com.bdqn.entity.Logs">
+        update logs
+        <set>
+            <if test="userId != null ">
+                userId = #{userId}
+            </if>
+            <if test="userName != null and userName ">
+                ,userName = #{userName}
+            </if>
+            <if test="businessNum != null and businessNum != ''">
+                ,businessNum = #{businessNum}
+            </if>
+            <if test="businessType != null and businessType!=''">
+               ,businessType = #{businessType}
+            </if>
+            <if test="businessStatus != null and businessStatus!= ''">
+                ,businessStatus = #{businessStatus}
+            </if>
+            <if test="operateMess != null and operateMess !=''">
+                ,operateMess = #{operateMess}
+            </if>
+            <if test="operateDate != null">
+                ,operateDate =#{operateDate}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <!-- 删除 -->
+    <delete id="getdeleOne">
+        <!--delete
+        from logs
+        <where>
+            id = #{id}
+        </where>-->
+    </delete>
+    <!-- 增 -->
+    <insert id="getAddOne" parameterType="com.bdqn.entity.Logs">
+        insert into logs (
+          userId,
+          userCode,
+          userName,
+          businessNum,
+          businessType,
+          businessStatus,
+          operateMess,
+          operateDate
+        )values(
+          #{userId},
+          #{userCode},
+          #{userName},
+          #{businessNum},
+          #{businessType},
+          #{businessStatus},
+          #{operateMess},
+          #{operateDate}
+        )
+    </insert>
+</mapper>

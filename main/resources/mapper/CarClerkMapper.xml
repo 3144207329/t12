@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.dao.CarClerkDao">
+    <!-- 查询  ++ 模糊查询-->
+    <select id="getAllByConfigCode" parameterType="com.bdqn.entity.CarClerk" resultType="com.bdqn.entity.CarClerk">
+        select *
+        from car_clerk
+        <where>
+            <if test="id != null">
+                id =#{id}
+            </if>
+            <if test="businessNum != null and businessNum != ''">
+                and businessNum like CONCAT('%',#{businessNum},'%')
+            </if>
+            <if test="companyId != null">
+                and companyId = #{companyId}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                and companyName like concat('%',#{companyName},'%')
+            </if>
+            <if test="customerName != null and customerName!=''">
+                and customerName like concat('%',#{customerName},'%')
+            </if>
+            <if test="submitId != null">
+                and submitId = #{submitId}
+            </if>
+            <if test="submitName != null and submitName!= ''">
+                and submitName like concat('%',#{submitName},'%')
+            </if>
+            <if test="submitUserName != null and submitUserName != ''">
+                and submitUserName like concat('%',#{submitUserName},'%')
+            </if>
+            <if test="submitTime != null">
+                and submitTime = NOW()
+            </if>
+            <if test="phone != null">
+                and phone = #{phone}
+            </if>
+            <if test="carPlateNum != null and carPlateNum!= ''">
+                and carPlateNum like concat('%',#{carPlateNum},'%')
+            </if>
+            <if test="threeInOneId != null">
+                and threeInOneId = #{threeInOneId}
+            </if>
+            <if test="threeInOneName != null and threeInOneName !=''">
+                and threeInOneName like concat('%',#{threeInOneName},'%')
+            </if>
+            <if test="plateColorId != null">
+                and plateColorId =#{plateColorId}
+            </if>
+            <if test="plateColorName != null and plateColorName!= ''">
+                and plateColorName like concat('%',#{plateColorName},'%')
+            </if>
+            <if test="creationTime != null">
+                and creationTime = NOW()
+            </if>
+            <if test="createdBy != null and createdBy != ''">
+                and createdBy like concat('%',#{createdBy},'%')
+            </if>
+            <if test=" createdId != null">
+                and createdId = #{createdId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test=" lastUpdateBy != null and lastUpdateBy != ''">
+                and lastUpdateBy like concat('%',#{lastUpdateBy},'%')
+            </if>
+            <if test="lastUpdateTime != null">
+                and lastUpdateTime = #{lastUpdateTime}
+            </if>
+        </where>
+    </select>
+    <!--  改 -->
+    <update id="getUpOne" parameterType="com.bdqn.entity.CarClerk">
+        update car_clerk
+        <set>
+            <if test="businessNum != null and businessNum != ''">
+                ,businessNum = #{businessNum}
+            </if>
+            <if test="companyId != null">
+                ,companyId = #{companyId}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                ,companyName = #{companyName}
+            </if>
+            <if test="customerName != null and customerName!=''">
+                ,customerName = #{customerName}
+            </if>
+            <if test="phone != null">
+                ,phone = #{phone}
+            </if>
+            <if test="carPlateNum != null and carPlateNum!= ''">
+                ,carPlateNum = #{carPlateNum}
+            </if>
+            <if test="threeInOneId != null">
+                ,threeInOneId = #{threeInOneId}
+            </if>
+            <if test="threeInOneName != null and threeInOneName !=''">
+                ,threeInOneName = #{threeInOneName}
+            </if>
+            <if test="plateColorId != null">
+                ,plateColorId = #{plateColorId}
+            </if>
+            <if test="plateColorName != null and plateColorName!= ''">
+                ,plateColorName = #{plateColorName}
+            </if>
+            <if test="creationTime != null">
+                ,creationTime = NOW()
+            </if>
+            <if test="createdBy != null and createdBy != ''">
+                ,createdBy = #{createdBy}
+            </if>
+            <if test=" createdId != null">
+                ,createdId = #{createdId}
+            </if>
+            <if test="submitId != null">
+                , submitId = #{submitId}
+            </if>
+            <if test="submitName != null and submitName!= ''">
+                , submitName = #{submitName}
+            </if>
+            <if test="submitUserName != null and submitUserName != ''">
+                , submitUserName = #{submitUserName}
+            </if>
+            <if test="submitTime != null">
+                , submitTime =#{submitTime}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+            <if test="boHui != null and boHui != ''">
+                ,boHui = #{boHui}
+            </if>
+            <if test="submitId == 1 or jieGuoId == 1">
+                ,boHui = null
+            </if>
+            <if test="jieGuoId != null">
+                ,jieGuoId = #{jieGuoId}
+            </if>
+            <if test="jieGuoName != null and jieGuoName != ''">
+                ,jieGuoName = #{jieGuoName}
+            </if>
+            <if test="boHui == null or boHui == ''">
+                ,lastUpdateBy = #{lastUpdateBy}
+                ,lastUpdateTime =NOW()
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <!-- 删除 -->
+    <delete id="getdeleOne">
+        UPDATE
+          `emailmanagedb`.`car_clerk`
+        SET
+          `status` = '1'
+        WHERE `id` = #{id}
+    </delete>
+    <!-- 增 -->
+    <insert id="getAddOne" parameterType="com.bdqn.entity.CarClerk">
+       INSERT INTO `emailmanagedb`.`car_clerk` (
+          `businessNum`,
+          `companyId`,
+          `companyName`,
+          `customerName`,
+          `phone`,
+          `carPlateNum`,
+          `threeInOneId`,
+          `threeInOneName`,
+          `plateColorId`,
+          `plateColorName`,
+          `creationTime`,
+          `createdBy`,
+          `createdId`,
+          `status`,
+          `lastUpdateBy`,
+          `lastUpdateTime`,
+          `submitId`,
+          `submitName`,
+          `boHui`,
+          `jieGuoId`,
+          `jieGuoName`,
+          `submitUserName`,
+          `submitTime`
+        )
+        VALUES
+          (
+        #{businessNum},
+        #{companyId},
+        #{companyName},
+        #{customerName},
+        #{phone},
+        #{carPlateNum},
+        #{threeInOneId},
+        #{threeInOneName},
+        #{plateColorId},
+        #{plateColorName},
+        NOW(),
+        #{createdBy},
+        #{createdId},
+        #{status},
+        #{lastUpdateBy},
+        #{lastUpdateTime},
+        #{submitId},
+        #{submitName},
+        #{boHui},
+        #{jieGuoId},
+        #{jieGuoName},
+        #{submitUserName},
+        #{submitTime}
+          )
+    </insert>
+</mapper>

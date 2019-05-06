@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.dao.SystemconfigDao">
+    <!-- 查询 -->
+    <select id="getAllByConfigCode" resultType="com.bdqn.entity.Systemconfig">
+        SELECT
+          `id`,
+          `configCode`,
+          `configName`,
+          `configValueId`,
+          `configValueName`,
+          `status`
+        FROM
+          `emailmanagedb`.`systemconfig`
+        WHERE `configCode` = #{configCode}
+        <if test="configValueId != null and configValueId != 1">
+            and configValueId > #{configValueId}
+        </if>
+
+    </select>
+    <!-- 模糊查询 -->
+    <select id="getAll" parameterType="com.bdqn.entity.Systemconfig" resultType="com.bdqn.entity.Systemconfig">
+        select *
+        from  systemconfig
+        <where>
+            <if test="id != null and id != ''">
+                `id` = #{id}
+            </if>
+            <if test="configCode != null and configCode != ''">
+                and `configCode` = #{configCode}
+            </if>
+            <if test="configName != null and configName != ''">
+                and `configName` = #{configName}
+            </if>
+            <if test="configValueId != null and configValueId != ''">
+                and `configValueId` = #{configValueId}
+            </if>
+            <if test="configValueName != null and configValueName != ''">
+                and `configValueName` = #{configValueName}
+            </if>
+            <if test="status != null and status != ''">
+                and `status` = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!--  改 -->
+    <update id="getUpOne" parameterType="com.bdqn.entity.Systemconfig">
+        UPDATE
+        `emailmanagedb`.`systemconfig`
+        <set>
+            <if test="configCode != null and configCode != ''">
+                `configCode` = #{configCode},
+            </if>
+            <if test="configName != null and configName != ''">
+                `configName` = #{configName},
+            </if>
+            <if test="configValueId != null ">
+                `configValueId` = #{configValueId},
+            </if>
+            <if test="configValueName != null and configValueName != ''">
+                `configValueName` = #{configValueName},
+            </if>
+            <if test="configValueName != null and configValueName != ''">
+                `configValueName` = #{configValueName},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
+        </set>
+        WHERE `id` = #{id}
+    </update>
+    <!-- 删除 -->
+    <update id="getdeleOne">
+        update systemconfig
+        set status = 1
+        <where>
+            <if test="id != null and id != '' ">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+    <!-- 增 -->
+    <insert id="getAddOne" parameterType="com.bdqn.entity.Systemconfig">
+          insert INTO systemconfig (
+              configCode
+              configName
+              configValueId
+              configValueName
+              status
+          )values (
+              #{configCode},
+              #{configName},
+              #{configValueId},
+              #{configValueName},
+              #{status}
+          )
+    </insert>
+</mapper>

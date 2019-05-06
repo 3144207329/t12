@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.dao.UserDao">
+    <!--登录-->
+    <select id="getUser" resultType="com.bdqn.entity.User">
+        SELECT
+          `id`,
+          `userCode`,
+          `password`,
+          `userName`,
+          `groupId`,
+          `groupName`,
+          `companyId`,
+          `companyName`,
+          `sex`,
+          `phone`,
+          `email`,
+          `age`,
+          `lastLoginTime`,
+          `status`,
+          `lastUpdateBy`,
+          `lastUpdateTime`,
+          zhiWei
+        FROM
+          `emailmanagedb`.`user`
+        WHERE `userCode` = #{userCode} AND `password` = #{password}
+    </select>
+
+    <!--模糊查询-->
+    <select id="getAll" resultType="com.bdqn.entity.User" parameterType="com.bdqn.entity.User">
+        SELECT *
+        FROM `user`
+        <where>
+            <if test="userCode != null and userCode != ''">
+                AND `userCode` LIKE CONCAT('%',#{userCode},'%')
+            </if>
+            <if test="userName != null and userName != ''">
+                AND `userName` LIKE CONCAT('%',#{userName},'%')
+            </if>
+            <if test="submitId != null">
+                and submitId = #{submitId}
+            </if>
+            <if test="submitName != null and submitName!= ''">
+                and submitName like concat('%',#{submitName},'%')
+            </if>
+            <if test="submitUserName != null and submitUserName != ''">
+                and submitUserName like concat('%',#{submitUserName},'%')
+            </if>
+            <if test="submitTime != null">
+                and submitTime = NOW()
+            </if>
+            <if test="sex != null and sex != ''">
+                AND `sex` = #{sex}
+            </if>
+            <if test="phone != null">
+                and phone LIKE CONCAT('%',#{phone},'%')
+            </if>
+            <if test="groupName != null and groupName != ''">
+                AND `groupName` LIKE CONCAT('%',#{groupName},'%')
+            </if>
+            <if test="companyName != null and companyName != ''">
+                AND `companyName` LIKE CONCAT('%',#{companyName},'%')
+            </if>
+            <if test="status != null and status != ''">
+                AND `status` LIKE CONCAT('%',#{status},'%')
+            </if>
+            <if test="id != null">
+                AND (`id` = #{id}
+            <!--</if>
+             <if test="zhiWei != null and zhiWei != ''">-->
+                <if test="zhiWei &lt; 3 ">
+                    OR zhiWei > #{zhiWei}
+                </if>
+                )
+             </if>
+        </where>
+    </select>
+    <!--注销-->
+    <update id="delUpd">
+        UPDATE `emailmanagedb`.`user`
+        SET `status` = 1
+        WHERE `id` = #{id}
+    </update>
+
+    <!--修改用户-->
+    <update id="updById" parameterType="com.bdqn.entity.User">
+        UPDATE
+          `emailmanagedb`.`user`
+        <set>
+            <if test="userCode != null and userCode != ''">
+                `userCode` = #{userCode},
+            </if>
+            <if test="userName != null and userName != ''">
+                `userName` = #{userName},
+            </if>
+            <if test="sex != null and sex != ''">
+                `sex` = #{sex},
+            </if>
+            <!--<if test="groupName != null and groupName != ''">-->
+                `groupName` = #{groupName},
+            <!--</if>
+            <if test="companyName != null and companyName != ''">-->
+                `companyName` = #{companyName},
+           <!-- </if>-->
+            <if test="status != null">
+                `status` = #{status},
+            </if>
+            <if test="password != null and password != ''">
+                `password` = #{password},
+            </if>
+            <if test="submitId != null">
+                , submitId = #{submitId}
+            </if>
+            <if test="submitName != null and submitName!= ''">
+                , submitName = #{submitName}
+            </if>
+            <if test="submitUserName != null and submitUserName != ''">
+                , submitUserName = #{submitUserName}
+            </if>
+            <if test="submitTime != null">
+                , submitTime =#{submitTime}
+            </if>
+            <if test="submitId != null">
+                , submitId = #{submitId}
+            </if>
+            <if test="submitName != null and submitName!= ''">
+                , submitName = #{submitName}
+            </if>
+            <if test="submitUserName != null and submitUserName != ''">
+                , submitUserName = #{submitUserName}
+            </if>
+           <!-- <if test="groupId != null and groupId != ''">-->
+                `groupId` = #{groupId},
+            <!--</if>
+            <if test="companyId != null and companyId != ''">-->
+                `companyId` = #{companyId},
+            <!--</if>-->
+            <if test="phone != null and phone != ''">
+                `phone` = #{phone},
+            </if>
+            <if test="email != null and email != ''">
+                `email` = #{email},
+            </if>
+            <if test="age != null and age != ''">
+                `age` = #{age},
+            </if>
+            <if test="lastUpdateBy != null and lastUpdateBy != ''">
+                `lastUpdateBy` = #{lastUpdateBy},
+            </if>
+            <if test="zhiWei != null and zhiWei != ''">
+                `zhiWei` = #{zhiWei},
+            </if>
+            `lastUpdateTime` = NOW()
+        </set>
+        WHERE `id` = #{id}
+    </update>
+
+    <!--查询自己与自己的手下-->
+    <select id="getMyAndShou" parameterType="com.bdqn.entity.User">
+
+    </select>
+    <!--修改登录时间-->
+    <update id="updLoginDate">
+        UPDATE `emailmanagedb`.`user`
+        SET `lastLoginTime` = NOW()
+        WHERE `id` = #{id}
+    </update>
+
+    <!--添加用户-->
+    <insert id="addUser" parameterType="com.bdqn.entity.User">
+        INSERT INTO `emailmanagedb`.`user` (
+          `userCode`,
+          `password`,
+          `userName`,
+          `groupId`,
+          `groupName`,
+          `companyId`,
+          `companyName`,
+          `sex`,
+          `phone`,
+          `email`,
+          `age`,
+          `lastLoginTime`,
+          `status`,
+          `zhiWei`
+        )VALUES(
+          #{userCode},
+          #{password},
+          #{userName},
+          #{groupId},
+          #{groupName},
+          #{companyId},
+          #{companyName},
+          #{sex},
+          #{phone},
+          #{email},
+          #{age},
+          #{lastLoginTime},
+          #{status},
+          #{zhiWei})
+    </insert>
+</mapper>
